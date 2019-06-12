@@ -1,0 +1,222 @@
+READ ME
+Option 2: Pymaceuticals Inc
+
+While your data companions rushed off to jobs in finance and government, you remained adamant that science was the way for you. Staying true to your mission, you've since joined Pymaceuticals Inc., a burgeoning pharmaceutical company based out of San Diego, CA. Pymaceuticals specializes in drug-based, anti-cancer pharmaceuticals. In their most recent efforts, they've since begun screening for potential treatments to squamous cell carcinoma (SCC), a commonly occurring form of skin cancer.
+
+As their Chief Data Analyst, you've been given access to the complete data from their most recent animal study. In this study, 250 mice were treated through a variety of drug regimes over the course of 45 days. Their physiological responses were then monitored over the course of that time. Your objective is to analyze the data to show how four treatments (Capomulin, Infubinol, Ketapril, and Placebo) compare.
+
+To do this you are tasked with:
+
+
+Creating a scatter plot that shows how the tumor volume changes over time for each treatment.
+Creating a scatter plot that shows how the number of metastatic (cancer spreading) sites changes over time for each treatment.
+Creating a scatter plot that shows the number of mice still alive through the course of treatment (Survival Rate)
+Creating a bar graph that compares the total % tumor volume change for each drug across the full 45 days.
+
+
+As final considerations:
+
+
+You must use the Pandas Library and the Jupyter Notebook.
+You must use the Matplotlib library.
+You must include a written description of three observable trends based on the data.
+You must use proper labeling of your plots, including aspects like: Plot Titles, Axes Labels, Legend Labels, X and Y Axis Limits, etc.
+Your scatter plots must include error bars. This will allow the company to account for variability between mice. You may want to look into pandas.DataFrame.sem for ideas on how to calculate this.
+Remember when making your plots to consider aesthetics!
+
+
+Your legends should not be overlaid on top of any data.
+Your bar graph should indicate tumor growth as red and tumor reduction as green.
+It should also include a label with the percentage change for each bar. You may want to consult this tutorial for relevant code snippets.
+
+
+See Starter Workbook for a reference on expected format. (Note: For this example, you are not required to match the tables or data frames included. Your only goal is to build the scatter plots and bar graphs. Consider the tables to be potential clues, but feel free to approach this problem, however, you like.)
+
+
+Hints and Considerations
+
+Be warned: These are very challenging tasks. Be patient with yourself as you trudge through these problems. They will take time and there is no shame in fumbling along the way. Data visualization is equal parts exploration, equal parts resolution.
+You have been provided a starter notebook. Use the code comments as a guideline of steps you may wish to follow as you complete the assignment. You do not have to follow them step-for-step. Do not get bogged down in trying to interpret and accomplish each step.
+Between these two exercises, the Pymaceuticals one is significantly more challenging. So choose that one only if you feel somewhat comfortable with the material covered so far. The Pymaceuticals example will require you to research a good bit on your own for hacked solutions to problems you'll experience along the way. If you end up choosing this exercise, feel encouraged to constantly refer to Stack Overflow and the Pandas Documentation. These are needed tools in every data analyst's arsenal.
+Don't get bogged down in small details. Always focus on the big picture. If you can't figure out how to get a label to show up correctly, come back to it. Focus on getting the core skeleton of your notebook complete. You can always re-visit old problems.
+Remember: There are many ways to skin a cat, and similarly there are many ways to approach a data problem. The key throughout, however, is to break up your task into micro tasks. Try answering questions like: "How does my Data Frame need to be structured for me to have the right X and Y axis?" "How do I build a basic scatter plot?" "How do I add a label to that scatter plot?" "Where would the labels for that scatter plot come from?". Again! Don't let the magnitude of a programming task scare you off. Ultimately, every programming problem boils down to a handful of smaller, bite-sized tasks.
+Get help when you need it! There is never any shame in asking. But as always, ask a specific question. You'll never get a great answer to: "I'm lost." Good luck!
+
+MAPPING:
+Variables  / dataframes and other names used
+mouse_drug_df
+clinical_trial_df
+combined_trial_df (combined dataframe from the two CSV files)
+tumor_volume (tumor's response to treatment (mm3) AVERAGE)
+tumor_volume_sem (Standard Error Mean for the tumor volume AVERAGE)
+tumor_volume_pivot (tumor volume with a shift in index)
+tumor_volume_sem_pivot (standard error mean for the tumor volume with a shift in index)
+
+PymacuticalsFig1.png - (first graph showing tumor response to treatment)
+
+metastatic_sites_mean (average of the metastatic sites)
+metastatic_sites_df (dataframe of the mean of the MS)
+metastatic_sites_sem (standard error mean for the average metastatic sites)
+metastatic_sem_df (standard error mean for the average metastatic sites, dataframe)
+metastatic_sites_mean_pivot 
+metastatic_sites_sem_pivot
+
+PymacuticalsFig2.png (second graph showing metastisis data)
+
+survival_count (count of the combined DF with a view by 
+survival_count_df
+survival_count_pivot
+
+PymarcuticalsFig3.png (third graph showing survival counts)
+
+tumor_change
+tumor_change_sem
+
+percent_changes
+tumor_change
+tumor_change_sem
+
+PymarcuticalFig4.png (final bar graph showing tumor changes over time)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+NOTES:
+
+file 1  NAME: clinicaltrial_data.csv
+Mouse ID,Timepoint,Tumor Volume (mm3),Metastatic Sites
+
+file 2 NAME:  mouse_drug_data.csv
+Mouse ID,Drug
+
+NOTES OF THINGS FOUND:
+
+Error bar plotting
+FOUND ON STACK OVERFLOW: 
+
+def plot_normalized(agged, show_errorbars, filename):
+  combined = {}
+  for k in agged:
+    combined[k] = agged[k]['CPS_norm_mean']
+  combined = pandas.DataFrame(combined)
+
+  ax=combined.plot()
+
+  if show_errorbars:
+    for k in agged:
+      plt.errorbar(
+        x=agged[k].index,
+        y=agged[k]['CPS_norm_mean'],
+        yerr=agged[k]['CPS_norm_std'],
+        label = k #added
+      )
+
+  if show_errorbars: #try this, dirty fix
+   labels, handles = ax.get_legend_handles_labels()
+   N = len(handles)/2
+   plt.legend(labels[:N], handles[N:])
+
+  #Why does the fix work?:
+  #labels, handles = ax.get_legend_handles_labels()
+  #print handles
+  #out:
+  #[u'Blank', u'H9A', u'Q180K', u'Wildtype', 'Q180K', 'H9A', 'Wildtype', 'Blank']
+  #Right half has correct order, these are the labels from label=k above in errorplot
+
+
+
+  plt.xlabel('Time')
+  plt.ylabel('CPS/Absorbency')
+  plt.title('CPS/Absorbency vs. Time')
+  plt.savefig(filename)
+#############################################################################################################
+MATPLOTLIB:  Error 
+
+x,y,yerr = rand(3,10)
+errorbar(x, y, yerr, marker='s', mfc='red',
+         mec='green', ms=20, mew=4)
+
+
+*************************************************************************************
+x = 1:10:100;
+y = [20 30 45 40 60 65 80 75 95 90]; 
+err = [5 8 2 9 3 3 8 3 9 3];
+errorbar(x,y,err)
+
+*****************************************************
+Error bars are graphical representations of the variability of data and used on graphs to indicate the error or uncertainty in a reported measurement. They give a general idea of how precise a measurement is, or conversely, how far from the reported value the true (error free) value might be. Error bars often represent one standard deviation of uncertainty, one standard error, or a particular confidence interval (e.g., a 95% interval). These quantities are not the same and so the measure selected should be stated explicitly in the graph or supporting text.
+
+Error bars can be used to compare visually two quantities if various other conditions hold. This can determine whether differences are statistically significant. Error bars can also suggest goodness of fit of a given function, i.e., how well the function describes the data. Scientific papers in the experimental sciences are expected to include error bars on all graphs, though the practice differs somewhat between sciences, and each journal will have its own house style. It has also been shown that error bars can be used as a direct manipulation interface for controlling probabilistic algorithms for approximate computation.[1] Error bars can also be expressed in a plus-minus sign (±), plus the upper limit of the error and minus the lower limit of the error.[2]
+
+A notorious misconception in elementary statistics is that error bars show whether or not a statistically significant difference exists, by checking simply for whether or not the error bars overlap; this is not the case
+****************************************8
+
+DataFrame.sem(axis=None, skipna=None, level=None, ddof=1, numeric_only=None, **kwargs)[source]
+Return unbiased standard error of the mean over requested axis.
+
+Normalized by N-1 by default. This can be changed using the ddof argument
+
+*******************************************************************************
+
+def autolabel(rects, ax):
+    # Get y-axis height to calculate label position from.
+    (y_bottom, y_top) = ax.get_ylim()
+    y_height = y_top - y_bottom
+
+    for rect in rects:
+        height = rect.get_height()
+
+        # Fraction of axis height taken up by this rectangle
+        p_height = (height / y_height)
+
+        # If we can fit the label above the column, do that;
+        # otherwise, put it inside the column.
+        if p_height > 0.95: # arbitrary; 95% looked good to me.
+            label_position = height - (y_height * 0.05)
+        else:
+            label_position = height + (y_height * 0.01)
+
+        ax.text(rect.get_x() + rect.get_width()/2., label_position,
+                '%d' % int(height),
+                ha='center', va='bottom')
+
+autolabel(rects1, ax)
+autolabel(rects2, ax)
+
+8*****************************************************************************************
+
+weight='bold'
+
+CONCLUSION
+
+Data available tracks ten drugs and 250 mice over the course of treatment.  
+During the time frame studied, there were some clear winners and losers in the treatment of the mice.
+Tumor response to treament shows that there are two drugs Capomulin and Ramicane that had the best turmor responses
+with Capomulin having tumor volume drop from 45 to 36 over the 45 days. 
+Ramicane's tumor volume dropped slightly more to 34. 
+with the worst drop in volume going to ketapril with an increase in volume from 45 to 70. 
+
+Metastatic response to treatment measures the number of metasties over time which showed that Capomulin and Ramicane 
+each having the fewest cancer sites 1.5 and 1.3 respectively.  The worst over time belonging to ketapril which had 
+an average site increase of 3.4.  
+
+Finally we review the survival rates of the mice over 45 days and we find again two clear winners, with a starting point of 25 mice, capomulin still had 21 mice and Ramicane had 20.  The worst survival rate belongs to propriva with only 7 mice surviving treatment. 
+
+Overall, there are two clear winners for treament, Capomulin and Ramicane.  The other drugs, including the placebo, did not shrink the tumor volume nearly as much.  Nor did this drugs prevent the spread of the cancer as well as the two winning drugs.  These drugs had significantly less survivers of the treatments over time which should impact any decision to use them.  
+
+
+
+
+
