@@ -1,2 +1,2 @@
-# BootcampHomework5:  Pymarcuticals
+# BootcampHomework5:  Pymacuticals
 Matplotlib homework
